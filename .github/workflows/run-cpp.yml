@@ -1,0 +1,34 @@
+name: Compile and Run C++ Programs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install g++
+        run: sudo apt-get update && sudo apt-get install -y g++
+
+      - name: Compile and run every .cpp file
+        run: |
+          echo "## 🧾 C++ Program Outputs" >> $GITHUB_STEP_SUMMARY
+          find . -name "*.cpp" | while read file; do
+            echo "### 📄 $file" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            g++ "$file" -o temp_exec
+            if [ $? -eq 0 ]; then
+              echo 5 | ./temp_exec >> $GITHUB_STEP_SUMMARY 2>&1 || echo "Runtime error" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "Compilation failed" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            rm -f temp_exec
+          done

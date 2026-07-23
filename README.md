@@ -1,4 +1,5 @@
 # DSA-Cpp
+![Build Status](https://github.com/snehasingh0330-tech/DSA-Cpp/actions/workflows/run-cpp.yml/badge.svg)
 
 This repository contains my C++ and Data Structures & Algorithms practice.
 
